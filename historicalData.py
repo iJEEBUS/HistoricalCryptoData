@@ -15,12 +15,12 @@ _url = 'https://coinmarketcap.com/currencies/'
 """
 Be able to input arguments to pick a coin, start/end date,
 """
-def getHistoricalData(*dictionary):
+def getHistoricalData(*coin):
 	_url = 'https://coinmarketcap.com/currencies/'
-	if dictionary:
-		if len(dictionary) == 1:
-			coin = dictionary[0]
-			_url += coin + '/historical-data/?start=20130428&end=20171024'
+	if coin:
+		if len(coin) == 1:
+			user_coin = coin[0]
+			_url += user_coin + '/historical-data/?start=20130428&end=20171024'
 
 	url = urllib.urlopen(_url)
 
