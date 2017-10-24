@@ -36,6 +36,7 @@ def getHistoricalData(*coin):
 	enumerated_data = enumerate(allData, start=1)
 	final_data = createList(enumerated_data)
 	dictionary = createDictionary(final_data)
+	return dictionary
 	
 
 """
@@ -95,15 +96,12 @@ def createDictionary(list):
 					"Volume": "",
 					"Market Cap": "",
 					}
-	for x in enum:
-		print x
 
 		## TODO
 		## ONLY ADDS DATA PER FOR EACH COLUMN OF EVERY 7 DAYS.
 	for x in enum:
 		if x[0] % 7 == 1:
 			historicalData['Date'] = x[1][0]
-			#print historicalData['Date']
 		if x[0] % 7 == 2:
 			historicalData['Open'] = x[1][1]
 		if x[0] % 7 == 3:
