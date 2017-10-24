@@ -1,20 +1,42 @@
+'''
+	Filename: historicalData.py
+	Author: Ronald Rounsifer
+	Date created: 10/24/2017
+	Date last modified: 10/24/2017
+	Python version 2.7.13
+'''
+
 from bs4 import BeautifulSoup
 import urllib
 
-url = urllib.urlopen('https://coinmarketcap.com/currencies/ethereum/historical-data/?start=20130428&end=20171024')
+# Base URL to get the historical data
+_url = 'https://coinmarketcap.com/currencies/'
 
-soup = BeautifulSoup(url, 'html.parser')
+"""
+Be able to input arguments to pick a coin, start/end date,
+"""
+def getHistoricalData(*dictionary):
+	_url = 'https://coinmarketcap.com/currencies/'
+	if dictionary:
+		if len(dictionary) == 1:
+			coin = dictionary[0]
+			_url += coin + '/historical-data/?start=20130428&end=20171024'
 
-table = soup.tbody
+	url = urllib.urlopen(_url)
 
-data = table.find_all('td')
-allData = []
+	soup = BeautifulSoup(url ,'html.parser')
 
+	table = soup.tbody
+	data = table.find_all('td')
+	allData = []
 
-for x in data:
-	allData.append(x.get_text())
+	for x in data:
+		allData.append(x.get_text())
 
-enumerated_data = enumerate(allData, start=1)
+	enumerated_data = enumerate(allData, start=1)
+	final_data = createList(enumerated_data)
+	dictionary = createDictionary(final_data)
+	
 
 """
 Creates a list of lists that contains each days information including:
@@ -106,25 +128,35 @@ def createDictionary(list):
 					}
 	return temp
 
-
+"""
+Returns all of the dates for the information in the dictionary
+"""
 def getDates(dictionary):
 	temp = []
 	for x in dictionary:
 		temp.append(x['Date'])
 	return temp
-
+"""
+Returns all of the open prices for the information in the dictionary
+"""
 def getOpenPrices(dictionary):
 	temp = []
 	for x in dictionary:
 		temp.append(x['Open'])
 	return temp
 
+"""
+Returns all of the high of the day prices for the information in the dictionary
+"""
 def getHighPrices(dictionary):
 	temp = []
 	for x in dictionary:
 		temp.append(x['High'])
 	return temp
 
+"""
+Returns all of the low of the day prices for the information in the dictionary
+"""
 def getLowPrices(dictionary):
 	temp = []
 	for x in dictionary:
@@ -132,28 +164,29 @@ def getLowPrices(dictionary):
 	return temp
 
 
+"""
+Returns all of the close prices for the information in the dictionary
+"""
 def getClosePrices(dictionary):
 	temp = []
 	for x in dictionary:
 		temp.append(x['Close'])
 	return temp
 
+"""
+Returns the volume for the information in the dictionary
+"""
 def getVolume(dictionary):
 	temp = []
 	for x in dictionary:
 		temp.append(x['Volume'])
 	return temp
 
+"""
+Returns the market cap for the information in the dictionary
+"""
 def getMarketCap(dictionary):
 	temp = []
 	for x in dictionary:
 		temp.append(x['Market Cap'])
 	return temp
-
-
-
-
-final_data = createList(enumerated_data)
-
-dictionary = createDictionary(final_data)
-
